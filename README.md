@@ -1,9 +1,3 @@
-Here's a detailed `README.md` boilerplate for your KrachHack project. It includes sections like project description, features, installation, usage, tech stack, and contribution guidelines. You can modify it as needed.
-
-Here's a detailed `README.md` boilerplate for your KrachHack project. You can modify it as needed.  
-
----
-
 # 🚀 KrachHack Web Project  
 
 Welcome to our project for **KrachHack**, the flagship event by Google at IIT Mandi! This project is built using **React with Vite** and integrates **Firebase Authentication** (via `src/` instead of npm) for secure user management.  
