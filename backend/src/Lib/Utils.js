@@ -9,7 +9,6 @@ export const GenerateToken = (userId, res) => {
         httpOnly: true,
         sameSite: "strict",
         secure: process.env.NODE_ENV !== "development"
-    })
-    console.log(token);
+    }) 
     return token;
 };

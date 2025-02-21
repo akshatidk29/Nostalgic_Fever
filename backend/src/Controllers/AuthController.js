@@ -83,6 +83,7 @@ export const Logout = (req, res) => {
 
 export const CheckAuth = (req, res) => {
     try {
+        console.log("CheckAuth called. User:", req.user); // ✅ Log the user data
         res.status(200).json({
             _id: req.user._id,
             fullname: req.user.fullname,
@@ -91,7 +92,8 @@ export const CheckAuth = (req, res) => {
             profilePic: req.user.profilePic,
         });
     } catch (error) {
-        console.log("Error in CheckAuth Controller", error.message)
+        console.log("Error in CheckAuth Controller", error.message);
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+

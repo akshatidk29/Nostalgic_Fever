@@ -6,27 +6,52 @@ export const UseAuthStore = create((set) => ({
     isSigningUp: false,
     isLoggingIn: false,
     isLoggingOut: false,
-    isCheckingAuth: true,
+    isCheckingAuth: false,
     isUpdatingProfile: false,
 
 
     // ✅ Persistent Login
     CheckAuth: async () => {
-        set({ isCheckingAuth: true }); // Ensure loading state
+        set((state) => ({ ...state, isCheckingAuth: true }));
+
         try {
+            console.log("Checking Auth...");
             const res = await axiosInstance.get("/Auth/Check");
+
             if (res.data) {
-                set({ authUser: res.data });
+                console.log("User Authenticated:", res.data);
+
+                // ❌ Prevent Unnecessary State Updates
+                set((state) => {
+                    if (!state.authUser) {
+                        return { ...state, authUser: res.data };
+                    }
+                    return state; // No change = No extra re-render
+                });
             } else {
-                set({ authUser: null });
+                console.log("No User Found");
+                set((state) => ({ ...state, authUser: null }));
             }
         } catch (error) {
-            console.error("Error in CheckAuth:", error.response?.data?.message || error.message);
-            set({ authUser: null });
+            console.error("Error in CheckAuth:", error.response?.status);
+
+            if (error.response?.status === 401) {
+                console.log("Unauthorized User - Logging Out");
+                set((state) => {
+                    if (state.authUser) {
+                        return { ...state, authUser: null };
+                    }
+                    return state;
+                });
+            }
         } finally {
-            set({ isCheckingAuth: false });
+            set((state) => ({ ...state, isCheckingAuth: false }));
         }
     },
+
+
+
+
     // ✅ Signup Function
     Signup: async (fullname, email, password) => {
         set({ isSigningUp: true });
