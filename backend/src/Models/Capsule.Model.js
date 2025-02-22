@@ -45,8 +45,36 @@ const CapsuleSchema = new mongoose.Schema({
             default: 0.5, // Default confidence score if not analyzed
         }
     },
+    // ✅ Likes Count
+    likes: {
+        type: Number,
+        default: 0, // Default likes count
+    },
 
-
+    // ✅ Comments Array
+    comments: [
+        {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User", // Reference to the user who commented
+                required: true,
+            },
+            username: {
+                type: String,
+                required: true,
+            },
+            content: {
+                type: String,
+                required: true,
+                trim: true,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now,
+            }
+        }
+    ],
+    
     openDate: {
         type: Date,
         required: true, // Date when the capsule unlocks

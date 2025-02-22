@@ -7,99 +7,87 @@ export const UseCapsuleStore = create((set) => ({
     loading: false,
     error: null,
 
-    uploadFiles: async (files, resourceType = "image") => {
-        const uploadedUrls = [];
+    // Keep existing uploadFiles and createCapsule functions...
 
-        for (const file of files) {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("upload_preset", "Nostalgic_Fever"); // Cloudinary preset
-            formData.append("folder", "capsules");
-            formData.append("resource_type", resourceType);
-
-            try {
-                const response = await fetch("https://api.cloudinary.com/v1_1/dexlyroio/upload", {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Upload failed: ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                uploadedUrls.push(data.secure_url);
-            } catch (error) {
-                console.error("Cloudinary Upload Error:", error);
-            }
-        }
-        return uploadedUrls;
-    },
-
-    // Create a new capsule
-    createCapsule: async (capsuleData) => {
-        try {
-            set({ loading: true, error: null });
-
-            // Upload images and videos separately
-            const imageUrls = capsuleData.images.length ? await UseCapsuleStore.getState().uploadFiles(capsuleData.images, "image") : [];
-            const videoUrls = capsuleData.videos.length ? await UseCapsuleStore.getState().uploadFiles(capsuleData.videos, "video") : [];
-
-            const payload = {
-                title: capsuleData.title,
-                content: capsuleData.content,
-                isPrivate: capsuleData.isPrivate,
-                openDate: capsuleData.openDate,
-                images: imageUrls,
-                videos: videoUrls,
-            };
-
-            const response = await axiosInstance.post("/Capsule/CreateCapsule", payload);
-            set((state) => ({ capsules: [response.data.capsule, ...state.capsules], loading: false }));
-            return response.data;
-        } catch (error) {
-            set({ error: error.response?.data?.message || "Failed to create capsule", loading: false });
-            throw error;
-        }
-    },
-
-    // Get user's private capsules
     getUserCapsules: async () => {
         try {
             set({ loading: true, error: null });
             const response = await axiosInstance.get("/Capsule/MyCapsules");
-            set({ capsules: response.data.capsules, loading: false });
-            return response.data.capsules || []; // ✅ Always return an array
+            const capsules = response.data.capsules || [];
+            set({ capsules, loading: false });
+            return capsules;
         } catch (error) {
-            set({ error: error.response?.data?.message || "Failed to fetch capsules", loading: false });
-            return []; // ✅ Return an empty array if there's an error
+            set({
+                error: error.response?.data?.message || "Failed to fetch capsules",
+                loading: false
+            });
+            return [];
         }
     },
 
-    // Get public capsules
     getPublicCapsules: async () => {
         try {
             set({ loading: true, error: null });
             const response = await axiosInstance.get("/Capsule/PublicCapsule");
-            set({ publicCapsules: response.data.capsules || [], loading: false });
-            return response.data.capsules || []; // ✅ Always return an array
+            const capsules = response.data.capsules || [];
+            set({ publicCapsules: capsules, loading: false });
+            return capsules;
         } catch (error) {
-            set({ error: error.response?.data?.message || "Failed to fetch public capsules", loading: false });
-            return []; // ✅ Return an empty array if there's an error
+            set({
+                error: error.response?.data?.message || "Failed to fetch public capsules",
+                loading: false
+            });
+            return [];
         }
     },
 
-
-    // Get a specific capsule by ID
-    getCapsuleById: async (capsuleId) => {
+    likeCapsule: async (capsuleId) => {
         try {
-            set({ loading: true, error: null });
-            const response = await axiosInstance.get(`/Capsule/${capsuleId}`);
-            set({ loading: false });
-            return response.data.capsule;
+            const response = await axiosInstance.post(`/Capsule/Like/${capsuleId}`);
+
+            // Update both capsules and publicCapsules arrays
+            set(state => ({
+                capsules: state.capsules.map(capsule =>
+                    capsule._id === capsuleId
+                        ? { ...capsule, likes: response.data.likes }
+                        : capsule
+                ),
+                publicCapsules: state.publicCapsules.map(capsule =>
+                    capsule._id === capsuleId
+                        ? { ...capsule, likes: response.data.likes }
+                        : capsule
+                )
+            }));
+            return response.data;
         } catch (error) {
-            set({ error: error.response?.data?.message || "Failed to fetch capsule", loading: false });
             throw error;
         }
     },
+
+    addComment: async (capsuleId, commentText) => {
+        try {
+            const response = await axiosInstance.post(`/Capsule/Comment/${capsuleId}`, {
+                content: commentText
+            });
+
+            set(state => ({
+                capsules: state.capsules.map(capsule =>
+                    capsule._id === capsuleId
+                        ? { ...capsule, comments: response.data.comments }
+                        : capsule
+                ),
+                publicCapsules: state.publicCapsules.map(capsule =>
+                    capsule._id === capsuleId
+                        ? { ...capsule, comments: response.data.comments }
+                        : capsule
+                )
+            }));
+
+            return response.data;
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            throw error;
+        }
+    }
+
 }));

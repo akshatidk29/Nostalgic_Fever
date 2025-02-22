@@ -13,7 +13,9 @@ import TimelinePage from "./Pages/TimelinePage";
 import CreateCapsulePage from "./Pages/CreateCapsulePage";
 import ChatPage from "./Pages/ChatPage";
 import HowToUse from "./Pages/HowToUse";
+import AllCapsulePage from "./Pages/AllCapsulePage";
 import { Loader } from "lucide-react";
+import ChatBot from "./Components/ChatBot";
 
 function App() {
   // ✅ Extract Zustand state and functions separately
@@ -37,8 +39,8 @@ function App() {
   }
 
   return (
-    <>
-      <Navbar />
+    <> <ChatBot />
+      {/* <Navbar /> */}
       <Routes>
         {/* Public Routes */}
         <Route path="/Signup" element={authUser ? <Navigate to="/" /> : <SignUpPage />} />
@@ -50,6 +52,7 @@ function App() {
         <Route path="/Profile" element={authUser ? <ProfilePage /> : <Navigate to="/Login" />} />
         <Route path="/CreateCapsule" element={authUser ? <CreateCapsulePage /> : <Navigate to="/Login" />} />
         <Route path="/Chat" element={authUser ? <ChatPage /> : <Navigate to="/Login" />} />
+        <Route path="/All" element={authUser ? <AllCapsulePage /> : <Navigate to="/Login" />} />
 
         {/* Always Accessible */}
         <Route path="/About" element={<AboutPage />} />

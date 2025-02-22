@@ -4,7 +4,7 @@ import { Users, Globe, BookOpen } from 'lucide-react';
 const AboutPage = () => {
   const [rotation, setRotation] = useState(0);
   
-  // Rotating effect for the icon
+  // ✅ Rotating effect for the icon
   useEffect(() => {
     const timer = setInterval(() => {
       setRotation(prev => (prev + 1) % 360);
@@ -14,26 +14,26 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 relative overflow-hidden">
-      {/* Hero Section */}
+      {/* ✅ Hero Section */}
       <div className="mb-8 mt-32 w-80% mx-auto relative h-80 overflow-hidden shadow-2xl flex items-center justify-center">
-        {/* Dark Overlay */}
+        {/* ✅ Dark Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
 
-        {/* Background Image */}
+        {/* ✅ Background Image */}
         <img
-          src="aboutbg.jpg"
+          src="About_BG.jpg"
           alt="About Nostalgic Fever"
           className="w-full h-full object-cover"
         />
 
-        {/* Overlay Text */}
+        {/* ✅ Overlay Text */}
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 text-white text-center">
           <h2 className="text-6xl font-bold mb-2">Preserve Memories, Forever.</h2>
           <p className="text-lg italic opacity-90">Your Digital Time Capsules Await</p>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* ✅ Main Content */}
       <div className="container mt-16 mb-16 rounded-4xl mx-auto px-6 py-16 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-indigo-400 bg-clip-text text-transparent">
@@ -44,7 +44,7 @@ const AboutPage = () => {
           </p>
         </div>
 
-        {/* Features Section */}
+        {/* ✅ Features Section */}
         <div className="grid md:grid-cols-3 gap-8 mt-16">
           <FeatureCard
             icon={<Globe />}
@@ -67,6 +67,7 @@ const AboutPage = () => {
   );
 };
 
+// ✅ Reusable Feature Card Component
 const FeatureCard = ({ icon, title, description }) => (
   <div className="bg-white/80 backdrop-blur-lg p-8 rounded-4xl shadow-lg border border-indigo-200 hover:shadow-xl transition-all">
     <div className="text-indigo-500 mb-4 w-12 h-12">{icon}</div>

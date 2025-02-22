@@ -7,12 +7,14 @@ const HowToUse = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
+  // ✅ Track Scroll Position & Update Active Step
   useEffect(() => {
     const handleScroll = () => {
       const position = window.scrollY;
       setScrollPosition(position);
       const sectionHeight = window.innerHeight;
       const newActiveStep = Math.min(3, Math.floor(position / sectionHeight));
+      
       if (newActiveStep !== activeStep) {
         setActiveStep(newActiveStep);
       }
@@ -22,6 +24,7 @@ const HowToUse = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [activeStep]);
 
+  // ✅ Step Data (Each Step Represents a Different Era)
   const steps = [
     {
       title: "Step 1: Sign Up",
@@ -57,18 +60,21 @@ const HowToUse = () => {
     },
   ];
 
+  // ✅ Calculate Floating Rocket Position Based on Scroll
   const getShipPosition = () => {
-    const maxScroll = window.innerHeight * 3;
+    const maxScroll = window.innerHeight * 3; // Full scroll height
     const scrollPercentage = Math.min(1, scrollPosition / maxScroll);
+
     return {
-      left: `${10 + scrollPercentage * 80}%`,
-      top: `${20 + Math.sin(scrollPercentage * Math.PI * 4) * 10}%`,
+      left: `${10 + scrollPercentage * 80}%`, // Move from left to right
+      top: `${20 + Math.sin(scrollPercentage * Math.PI * 4) * 10}%`, // Wavy effect
     };
   };
 
   return (
     <div className="relative w-full bg-black text-white overflow-hidden">
-      {/* Background Stars */}
+      
+      {/* ✅ Background Stars Animation */}
       <div className="fixed inset-0 z-[-1]">
         {[...Array(150)].map((_, i) => (
           <div
@@ -86,7 +92,7 @@ const HowToUse = () => {
         ))}
       </div>
 
-      {/* Floating Rocket */}
+      {/* ✅ Floating Rocket Animation */}
       <div
         className="fixed z-5 w-24 h-24 transform rotate-15 transition-all duration-500"
         style={getShipPosition()}
@@ -94,25 +100,39 @@ const HowToUse = () => {
         <Rocket className="w-24 h-24 text-purple-400 animate-pulse" />
       </div>
 
-      {/* Steps */}
+      {/* ✅ Step Sections */}
       {steps.map((step, index) => (
         <div
           key={index}
-          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700"}`}
+          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${
+            index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700"
+          }`}
         >
+          {/* ✅ Step Content */}
           <div
-            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"}`}
+            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${
+              activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"
+            }`}
           >
             <div className="text-purple-300 text-lg mb-4">
               {step.era} • {step.year}
             </div>
+            
+            {/* ✅ Step Icon & Title */}
             <div className="flex items-center mb-6">
               {step.icon}
-              <button onClick={() => navigate(step.link)} className="text-3xl font-bold ml-4 text-indigo-300 hover:text-indigo-500 transition-all duration-300">
+              <button
+                onClick={() => navigate(step.link)}
+                className="text-3xl font-bold ml-4 text-indigo-300 hover:text-indigo-500 transition-all duration-300"
+              >
                 {step.title}
               </button>
             </div>
+
+            {/* ✅ Step Description */}
             <p className="text-gray-300 text-lg leading-relaxed">{step.description}</p>
+
+            {/* ✅ Scroll Indicator (If Not Last Step) */}
             {index !== 3 && (
               <div className="text-center text-gray-400 mt-6 animate-bounce">
                 <ArrowDown className="w-12 h-12" />

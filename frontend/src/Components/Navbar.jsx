@@ -1,7 +1,7 @@
 import React from "react";
 import { UseAuthStore } from "../Store/UseAuthStore";
 import { Link } from "react-router-dom";
-import { User, MessageCircle } from "lucide-react"; // Profile & Message Icons
+import { User, MessageCircle } from "lucide-react"; // Profile & Chat Icons
 
 const Navbar = () => {
   const { authUser, isCheckingAuth, Logout } = UseAuthStore();
@@ -16,17 +16,17 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[1000] backdrop-blur-lg bg-white/10 border border-white/20 shadow-lg py-4 px-8 flex justify-between items-center">
-      {/* Logo */}
+      {/* ✅ Logo */}
       <Link to="/" className="text-3xl font-bold text-indigo-300 tracking-wide">
         Nostalgic <span className="text-indigo-400">Fever</span>
       </Link>
 
-      {/* Navigation Links */}
+      {/* ✅ Navigation Links */}
       <div className="hidden md:flex space-x-8">
         {[
           { name: "Home", path: "/" },
           { name: "HowToUse", path: "/HowToUse" },
-          { name: "Chat", path: "/Chat", icon: <MessageCircle className="w-5 h-5 inline-block mb-1" /> }, // New Message Button
+          { name: "Chat", path: "/Chat", icon: <MessageCircle className="w-5 h-5 inline-block mb-1" /> }, // ✅ Chat Page
           { name: "About", path: "/About" },
           { name: "Contact", path: "/Contact" }
         ].map((item, index) => (
@@ -41,7 +41,7 @@ const Navbar = () => {
         ))}
       </div>
 
-      {/* User Section */}
+      {/* ✅ User Section */}
       {authUser ? (
         <div className="flex items-center space-x-4">
           <span className="text-indigo-300 hover:text-cyan-600 font-medium">Hello, {authUser.fullname}</span>

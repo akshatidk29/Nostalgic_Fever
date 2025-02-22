@@ -10,6 +10,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // ✅ Handle user signup
   const handleSignup = async (e) => {
     e.preventDefault();
     if (!fullname || !email || !password) {
@@ -21,7 +22,7 @@ const SignUpPage = () => {
       return;
     }
 
-    setError(""); // Clear any previous errors
+    setError(""); // ✅ Clear previous errors
     await Signup(fullname, email, password);
   };
 
@@ -29,11 +30,11 @@ const SignUpPage = () => {
     <div className="flex items-center pt-32 justify-center min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-800 p-6">
       <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 text-center transition-all duration-300 hover:scale-105">
 
-        {/* Brand Name */}
+        {/* ✅ Brand Name */}
         <h2 className="text-4xl font-extrabold text-indigo-300">Nostalgic Fever</h2>
         <p className="text-indigo-200 mt-1">Create your account</p>
 
-        {/* Signup Form */}
+        {/* ✅ Signup Form */}
         <form onSubmit={handleSignup} className="mt-6 space-y-4">
           {error && <p className="text-red-400 text-sm">{error}</p>}
 
@@ -73,7 +74,7 @@ const SignUpPage = () => {
             />
           </div>
 
-          {/* Signup Button */}
+          {/* ✅ Signup Button */}
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-all flex items-center justify-center shadow-lg hover:shadow-indigo-500/25"
@@ -83,7 +84,7 @@ const SignUpPage = () => {
           </button>
         </form>
 
-        {/* Login Link */}
+        {/* ✅ Login Link */}
         <p className="text-sm text-indigo-300 mt-4">
           Already have an account?{" "}
           <Link to="/Login" className="text-yellow-300 hover:underline transition">

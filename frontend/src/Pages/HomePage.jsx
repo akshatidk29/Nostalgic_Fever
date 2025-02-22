@@ -149,7 +149,7 @@ const HomePage = () => {
             </p>
 
             {/* Search Bar */}
-            <motion.div variants={itemVariants} className="max-w-2xl mx-auto mb-64">
+            <motion.div variants={itemVariants} className="max-w-2xl mx-auto mb-44">
               <div className="relative group">
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-sky-500 rounded-full opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt blur"></div>
                 <div className="relative">
@@ -172,10 +172,46 @@ const HomePage = () => {
                 </div>
               </div>
             </motion.div>
+            {/* New Animated Button */}
+            <motion.div
+              variants={itemVariants}
+              className="max-w-md mx-auto mb-24"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="relative group">
+                {/* Animated gradient border */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500 rounded-xl opacity-70 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200 animate-gradient"></div>
+
+                {/* Animated light effects */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500 rounded-xl opacity-0 group-hover:opacity-30 blur-xl transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+
+                {/* Button content */}
+                <button
+                  onClick={() => navigate("/All")}
+                  className="relative px-8 py-4 w-full bg-gradient-to-r from-blue-900/90 to-indigo-900/90 rounded-xl text-xl font-bold text-white shadow-xl backdrop-blur-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-sky-200 group-hover:from-white group-hover:to-white transition-all duration-300">
+                    Explore All Memories
+                    <motion.span
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      →
+                    </motion.span>
+                  </span>
+                </button>
+              </div>
+            </motion.div>
 
             {/* Toggle */}
             <motion.div variants={itemVariants}>
-              <div className="relative w-150 h-15 mx-auto bg-white/5 backdrop-blur-sm rounded-full flex items-center cursor-pointer border border-blue-200/20"
+              <div className="relative w-150 mb-24 h-15 mx-auto bg-white/5 backdrop-blur-sm rounded-full flex items-center cursor-pointer border border-blue-200/20"
                 onClick={() => setShowPublic(!showPublic)}>
                 <motion.div
                   layout
@@ -287,7 +323,7 @@ const HomePage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-8 right-8 z-20"
+        className="fixed bottom-20 right-10 z-20"
       >
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-sky-500 rounded-full opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt blur-lg"></div>

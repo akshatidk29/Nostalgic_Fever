@@ -7,11 +7,12 @@ const ProfilePage = () => {
     const { authUser, UpdateProfile, CheckAuth } = UseAuthStore();
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // Fetch latest user data when the profile page is opened
+    // ✅ Fetch latest user data when the profile page is opened
     useEffect(() => {
         CheckAuth(); 
     }, [CheckAuth]);
 
+    // ✅ Handle profile image upload and update
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -23,7 +24,7 @@ const ProfilePage = () => {
             const base64Image = reader.result;
             setSelectedImage(base64Image);
 
-            // Update Profile
+            // ✅ Update profile picture in the database
             await UpdateProfile({ profilePic: base64Image });
         };
     };
@@ -32,13 +33,14 @@ const ProfilePage = () => {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-indigo-900 p-6">
             <div className="relative w-full max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 text-center transition-all duration-300 hover:scale-105">
 
-                {/* Profile Image */}
+                {/* ✅ Profile Image Section */}
                 <div className="relative w-32 h-32 mx-auto mb-6">
                     <img
-                        src={selectedImage || authUser?.profilePic || "./images.png"}
+                        src={selectedImage || authUser?.profilePic || "./Profile.png"}
                         alt="Profile"
                         className="w-full h-full rounded-full border-4 border-indigo-400 object-cover hover:opacity-90 transition"
                     />
+                    {/* ✅ Image Upload Button */}
                     <label htmlFor="profilePicInput" className="absolute bottom-2 right-2 bg-indigo-600 p-2 rounded-full shadow-md hover:scale-110 transition-all cursor-pointer">
                         <Camera className="w-6 h-6 text-white" />
                         <input
@@ -51,12 +53,12 @@ const ProfilePage = () => {
                     </label>
                 </div>
 
-                {/* User Info */}
+                {/* ✅ User Information */}
                 <h1 className="text-3xl font-bold text-indigo-300">{authUser?.fullname}</h1>
                 <p className="text-gray-300 text-sm mt-1">📧 {authUser?.email}</p>
                 <p className="text-sm text-gray-400 mt-2">📅 Member since: {new Date(authUser?.createdAt).toLocaleDateString()}</p>
 
-                {/* Profile Actions */}
+                {/* ✅ Profile Actions */}
                 <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Link 
                         to="/timeline" 

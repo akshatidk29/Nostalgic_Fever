@@ -12,7 +12,6 @@ const sentimentMapping = {
 
 export const analyzeSentiment = async (text) => {
     try {
-        console.log("📡 Sending request to Hugging Face...");
         const response = await fetch("https://api-inference.huggingface.co/models/cardiffnlp/twitter-roberta-base-sentiment", {
             method: "POST",
             headers: {
@@ -24,7 +23,6 @@ export const analyzeSentiment = async (text) => {
 
         // Log raw response (debugging)
         const result = await response.json();
-        console.log("📡 API Raw Response:", result);
 
         if (!Array.isArray(result) || result.length === 0 || !Array.isArray(result[0]) || result[0].length === 0) {
             console.error("❌ Invalid API Response:", result);

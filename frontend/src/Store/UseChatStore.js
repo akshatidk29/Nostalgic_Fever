@@ -1,15 +1,17 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
-import { UseAuthStore } from "./UseAuthStore"
+import { UseAuthStore } from "./UseAuthStore";
 import { axiosInstance } from "../Lib/Axios.js";
 
+// Zustand store to manage chat-related state
 export const UseChatStore = create((set, get) => ({
-    messages: [],
-    users: [],
-    selectedUser: null,
-    isUsersLoading: false,
-    isMessagesLoading: false,
+    messages: [], // Stores chat messages
+    users: [], // Stores the list of available users for chat
+    selectedUser: null, // Currently selected chat user
+    isUsersLoading: false, // Loading state for fetching users
+    isMessagesLoading: false, // Loading state for fetching messages
 
+    // Fetch users who can be messaged
     getUsers: async () => {
         set({ isUsersLoading: true });
         try {
@@ -22,9 +24,11 @@ export const UseChatStore = create((set, get) => ({
         }
     },
 
+    // Fetch messages for the selected user
     getMessages: async (userId) => {
         if (!userId) return;
         set({ isMessagesLoading: true });
+
         try {
             const res = await axiosInstance.get(`/Message/${userId}`);
             set({ messages: res.data });
@@ -35,6 +39,7 @@ export const UseChatStore = create((set, get) => ({
         }
     },
 
+    // Send a message to the selected user
     sendMessage: async (text) => {
         const { selectedUser, messages } = get();
         if (!selectedUser) return;
@@ -47,6 +52,7 @@ export const UseChatStore = create((set, get) => ({
         }
     },
 
+    // Subscribe to real-time message updates via socket
     subscribeToMessages: () => {
         const { selectedUser } = get();
         if (!selectedUser) return;
@@ -54,17 +60,17 @@ export const UseChatStore = create((set, get) => ({
         const socket = UseAuthStore.getState().socket;
         socket.on("newMessage", (newMessage) => {
             set({
-                messages: [...get().messages, newMessage], // ✅ Corrected key name
+                messages: [...get().messages, newMessage],
             });
         });
-
     },
 
+    // Unsubscribe from real-time messages
     unsubscribeFromMessages: () => {
         const socket = UseAuthStore.getState().socket;
         socket.off("newMessage");
-
     },
 
+    // Set the currently selected user for messaging
     setSelectedUser: (selectedUser) => set({ selectedUser }),
 }));
