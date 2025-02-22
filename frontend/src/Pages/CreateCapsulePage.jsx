@@ -1,37 +1,50 @@
 import React, { useState } from "react";
+import { UseCapsuleStore } from "../Store/UseCapsuleStore";
+import { useNavigate } from "react-router-dom";
 
 const CreateCapsulePage = () => {
+  const { createCapsule } = UseCapsuleStore();
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
   const [files, setFiles] = useState([]);
-  const [privacy, setPrivacy] = useState("private");
+  const [isPrivate, setIsPrivate] = useState(true);
   const [openDate, setOpenDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    // Dummy Log - Replace with API Call
-    console.log({
-      title,
-      description,
-      files,
-      privacy,
-      openDate,
-    });
+    // Separate images and videos before uploading
+    const imageFiles = files.filter(file => file.type.startsWith("image/"));
+    const videoFiles = files.filter(file => file.type.startsWith("video/"));
 
-    alert("Time Capsule Created Successfully!");
+    try {
+      await createCapsule({ title, content, images: imageFiles, videos: videoFiles, isPrivate, openDate });
+      navigate("/Timeline");
+    } catch (err) {
+      setError("Failed to create capsule. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   return (
     <div className="min-h-screen pt-32 flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-indigo-900 text-white px-6">
       <h1 className="text-4xl font-bold text-indigo-300 mb-8">Create a Time Capsule</h1>
 
+      {error && <p className="text-red-400">{error}</p>}
+
       <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-2xl">
-        {/* Title */}
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Title</label>
           <input
@@ -39,25 +52,21 @@ const CreateCapsulePage = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full bg-white/10 border border-white/30 rounded-lg p-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Enter a title for your capsule"
             required
           />
         </div>
 
-        {/* Description */}
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Description</label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             className="w-full bg-white/10 border border-white/30 rounded-lg p-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none"
-            placeholder="Describe your time capsule..."
             rows="4"
             required
           />
         </div>
 
-        {/* File Upload */}
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Upload Files</label>
           <input
@@ -69,7 +78,6 @@ const CreateCapsulePage = () => {
           />
         </div>
 
-        {/* Privacy */}
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Privacy</label>
           <div className="flex space-x-6">
@@ -77,20 +85,19 @@ const CreateCapsulePage = () => {
               <input
                 type="radio"
                 value="private"
-                checked={privacy === "private"}
-                onChange={() => setPrivacy("private")}
+                checked={isPrivate}
+                onChange={() => setIsPrivate(true)}
                 className="hidden peer"
               />
               <span className="w-5 h-5 border border-white/50 rounded-full peer-checked:bg-indigo-500"></span>
               <span>Private</span>
             </label>
-
             <label className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="radio"
                 value="community"
-                checked={privacy === "community"}
-                onChange={() => setPrivacy("community")}
+                checked={!isPrivate}
+                onChange={() => setIsPrivate(false)}
                 className="hidden peer"
               />
               <span className="w-5 h-5 border border-white/50 rounded-full peer-checked:bg-indigo-500"></span>
@@ -99,7 +106,6 @@ const CreateCapsulePage = () => {
           </div>
         </div>
 
-        {/* Open Date */}
         <div className="mb-6">
           <label className="block text-lg font-medium mb-2">Open Date</label>
           <input
@@ -111,12 +117,12 @@ const CreateCapsulePage = () => {
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white py-3 rounded-lg text-lg font-medium transition-transform transform hover:scale-105 shadow-lg"
+          disabled={loading}
         >
-          Create Capsule
+          {loading ? "Creating..." : "Create Capsule"}
         </button>
       </form>
     </div>

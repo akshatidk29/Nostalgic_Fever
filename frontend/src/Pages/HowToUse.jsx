@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowDown, Rocket, Dna, Clock, CheckSquare } from "lucide-react";
 
 const HowToUse = () => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -23,6 +25,7 @@ const HowToUse = () => {
   const steps = [
     {
       title: "Step 1: Sign Up",
+      link: "/Signup",
       description: "Create your account in just a few seconds to get started with our service.",
       icon: <Clock className="w-20 h-20 text-indigo-400" />,
       era: "Future",
@@ -30,13 +33,15 @@ const HowToUse = () => {
     },
     {
       title: "Step 2: Set Preferences",
+      link: "/Profile",
       description: "Customize your experience by selecting your preferred settings and options.",
       icon: <CheckSquare className="w-20 h-20 text-indigo-400" />,
       era: "Present",
       year: "2025 AD",
     },
     {
-      title: "Step 3: Connect Your Data",
+      title: "Step 3: Upload Your Data",
+      link: "/CreateCapsule",
       description: "Link your existing accounts to get the full benefit of our platform.",
       icon: <Dna className="w-20 h-20 text-indigo-400" />,
       era: "Ice Age",
@@ -44,6 +49,7 @@ const HowToUse = () => {
     },
     {
       title: "Step 4: Start Exploring",
+      link: "/Timeline",
       description: "You're all set! Begin exploring all the amazing features available to you.",
       icon: <Rocket className="w-20 h-20 text-indigo-400" />,
       era: "Dinosaur Era",
@@ -92,19 +98,19 @@ const HowToUse = () => {
       {steps.map((step, index) => (
         <div
           key={index}
-          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700  "
-            }`}
+          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700"}`}
         >
           <div
-            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"
-              }`}
+            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"}`}
           >
             <div className="text-purple-300 text-lg mb-4">
               {step.era} • {step.year}
             </div>
             <div className="flex items-center mb-6">
               {step.icon}
-              <h2 className="text-3xl font-bold ml-4">{step.title}</h2>
+              <button onClick={() => navigate(step.link)} className="text-3xl font-bold ml-4 text-indigo-300 hover:text-indigo-500 transition-all duration-300">
+                {step.title}
+              </button>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed">{step.description}</p>
             {index !== 3 && (

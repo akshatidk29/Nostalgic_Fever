@@ -2,6 +2,8 @@ import express from "express"
 import dotenv from "dotenv"
 import AuthRoutes from "./Routes/AuthRoutes.js"
 import UserRoutes from "./Routes/UserRoutes.js"
+import CapsuleRoutes from "./Routes/CapsuleRoutes.js"
+import MessageRoutes from "./Routes/MessageRoutes.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
 
@@ -22,6 +24,8 @@ app.use(cors({
 
 app.use("/Api/Auth", AuthRoutes);
 app.use("/Api/User", UserRoutes);
+app.use("/Api/Capsule", CapsuleRoutes);
+app.use("/Api/Message", MessageRoutes);
 
 
 app.listen(PORT, "0.0.0.0", () => {

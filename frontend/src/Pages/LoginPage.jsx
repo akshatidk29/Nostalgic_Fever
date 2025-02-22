@@ -20,19 +20,22 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg max-w-sm w-full animate-fade-in">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Krachhack</h2>
-        <p className="text-gray-500 text-center mt-1">Welcome back! Please login</p>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-800 p-6">
+      <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 text-center transition-all duration-300 hover:scale-105">
 
-        <form onSubmit={handleLogin} className="mt-6">
-          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+        {/* Brand Name */}
+        <h2 className="text-4xl font-extrabold text-indigo-300">Nostalgic Fever</h2>
+        <p className="text-indigo-200 mt-1">Welcome back! Please login</p>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium">Email</label>
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="mt-6 space-y-4">
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+
+          <div>
+            <label className="block text-indigo-200 font-medium text-left">Email</label>
             <input
               type="email"
-              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring focus:ring-indigo-200 focus:border-indigo-400"
+              className="w-full mt-1 px-4 py-2 bg-transparent border border-indigo-300 rounded-lg text-white placeholder-indigo-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -40,11 +43,11 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium">Password</label>
+          <div>
+            <label className="block text-indigo-200 font-medium text-left">Password</label>
             <input
               type="password"
-              className="w-full mt-1 px-4 py-2 border rounded-lg focus:ring focus:ring-indigo-200 focus:border-indigo-400"
+              className="w-full mt-1 px-4 py-2 bg-transparent border border-indigo-300 rounded-lg text-white placeholder-indigo-400 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -52,18 +55,20 @@ const LoginPage = () => {
             />
           </div>
 
+          {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg transition-all flex items-center justify-center"
+            className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-all flex items-center justify-center shadow-lg hover:shadow-indigo-500/25"
             disabled={isLoggingIn}
           >
             {isLoggingIn ? <Loader className="animate-spin mr-2" size={20} /> : "Login"}
           </button>
         </form>
 
-        <p className="text-sm text-gray-500 text-center mt-4">
+        {/* Signup Link */}
+        <p className="text-sm text-indigo-300 mt-4">
           Don't have an account?{" "}
-          <Link to="/Signup" className="text-indigo-600 hover:underline">
+          <Link to="/Signup" className="text-yellow-300 hover:underline transition">
             Sign up
           </Link>
         </p>

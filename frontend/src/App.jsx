@@ -9,6 +9,7 @@ import ContactPage from "./Pages/ContactPage"
 import ProfilePage from "./Pages/ProfilePage"
 import TimelinePage from "./Pages/TimelinePage"
 import CreateCapsulePage from "./Pages/CreateCapsulePage"
+import ChatPage from "./Pages/ChatPage"
 
 import HowToUse from "./Pages/HowToUse"
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Timeline" element={authUser ? <TimelinePage /> : <Navigate to="/Login" />} />
           <Route path="/Profile" element={authUser ? <ProfilePage /> : <Navigate to="/Login" />} />
           <Route path="/CreateCapsule" element={authUser ? <CreateCapsulePage /> : <Navigate to="/Login" />} />
+          <Route path="/Chat" element={authUser ? <ChatPage /> : <Navigate to="/Login" />} />
 
           {/* Always Accessible */}
           <Route path="/About" element={<AboutPage />} />

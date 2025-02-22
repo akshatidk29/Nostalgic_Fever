@@ -83,7 +83,6 @@ export const Logout = (req, res) => {
 
 export const CheckAuth = (req, res) => {
     try {
-        console.log("CheckAuth called. User:", req.user); // ✅ Log the user data
         res.status(200).json({
             _id: req.user._id,
             fullname: req.user.fullname,
