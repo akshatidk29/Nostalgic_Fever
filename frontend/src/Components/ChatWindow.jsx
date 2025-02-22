@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Send, X } from "lucide-react";
 import { UseChatStore } from "../Store/UseChatStore";
+import { UseAuthStore } from "../Store/UseAuthStore";
 
 const ChatWindow = () => {
-    const { messages, getMessages, sendMessage, isMessagesLoading, selectedUser } = UseChatStore();
+    const { messages, getMessages, sendMessage, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = UseChatStore();
+    const { onlineUsers } = UseAuthStore();
     const [messageText, setMessageText] = useState("");
     const [showProfile, setShowProfile] = useState(false);
 
     useEffect(() => {
         if (selectedUser?._id) {
             getMessages(selectedUser._id);
+
+            subscribeToMessages();
+            return () => unsubscribeFromMessages();
         }
-    }, [selectedUser]);
+    }, [selectedUser, getMessages, subscribeToMessages, unsubscribeFromMessages]);
 
     const handleSendMessage = () => {
         if (!messageText.trim()) return;
@@ -20,13 +25,18 @@ const ChatWindow = () => {
     };
 
     const formatTime = (timestamp) => {
-        const date = new Date(timestamp).toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
+        if (!timestamp) return "Invalid Date";
+        const date = new Date(timestamp);
+        if (isNaN(date.getTime())) return "Invalid Date";
+
+        return date.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
         });
-        console.log(date);
-        return date;
     };
+
+    // Check if the selected user is online
+    const isOnline = onlineUsers.includes(selectedUser?._id);
 
     if (!selectedUser) {
         return (
@@ -50,7 +60,9 @@ const ChatWindow = () => {
                 />
                 <div className="flex flex-col">
                     <span className="text-white font-bold">{selectedUser.fullname}</span>
-                    <span className="text-xs text-gray-400">Active Now</span>
+                    <span className="text-xs text-gray-400">
+                        {isOnline ? "Active Now" : "Last seen recently"}
+                    </span>
                 </div>
             </div>
 
@@ -67,13 +79,13 @@ const ChatWindow = () => {
                             return (
                                 <div
                                     key={index}
-                                    className={`flex ${isSentByMe ? 'justify-end' : 'justify-start'}`}
+                                    className={`flex ${isSentByMe ? "justify-end" : "justify-start"}`}
                                 >
-                                    <div className={`flex flex-col ${isSentByMe ? 'items-end' : 'items-start'}`}>
+                                    <div className={`flex flex-col ${isSentByMe ? "items-end" : "items-start"}`}>
                                         <div
                                             className={`p-3 rounded-2xl max-w-xs break-words ${isSentByMe
-                                                ? 'bg-indigo-600 text-white rounded-br-none'
-                                                : 'bg-gray-700 text-gray-100 rounded-bl-none'
+                                                ? "bg-indigo-600 text-white rounded-br-none"
+                                                : "bg-gray-700 text-gray-100 rounded-bl-none"
                                                 }`}
                                         >
                                             {msg.text}
@@ -98,7 +110,7 @@ const ChatWindow = () => {
                         placeholder="Type a message..."
                         value={messageText}
                         onChange={(e) => setMessageText(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                     />
                     <button
                         onClick={handleSendMessage}

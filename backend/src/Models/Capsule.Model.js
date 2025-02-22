@@ -31,6 +31,22 @@ const CapsuleSchema = new mongoose.Schema({
         type: Boolean,
         default: true, // Default to private
     },
+
+
+    // ✅ Updated Analysis: Only Sentiment Analysis (No Image/Video AI)
+    analysis: {
+        sentiment: {
+            type: String,
+            enum: ["positive", "neutral", "negative"], // Only valid sentiment values
+            default: "neutral",
+        },
+        confidence: {
+            type: Number,
+            default: 0.5, // Default confidence score if not analyzed
+        }
+    },
+
+
     openDate: {
         type: Date,
         required: true, // Date when the capsule unlocks

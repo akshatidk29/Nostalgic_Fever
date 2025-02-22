@@ -1,26 +1,40 @@
 import Capsule from "../Models/Capsule.Model.js";
+import { analyzeSentiment } from "../Utils/SentimentAPI.js"; // New helper for sentiment analysis
 
 export const AddCapsule = async (req, res) => {
     console.log(req.body);
+
     try {
         const { title, content, isPrivate, openDate, images, videos } = req.body;
+        console.log(content);
         const userId = req.user.id; // Get user ID from token
         const username = req.user.fullname;
-        // Validate fields
+
+        // Validate required fields
         if (!title || !openDate) {
             return res.status(400).json({ success: false, message: "Title and Open Date are required." });
         }
 
-        // Create capsule in database
+        // ✅ Sentiment Analysis on Capsule Content
+        let sentimentResult = { sentiment: "neutral", confidence: 0.5 }; // Default values
+        if (content) {
+            sentimentResult = await analyzeSentiment(content);
+        }
+
+        // ✅ Create Capsule in Database
         const capsule = new Capsule({
             user: userId,
             username,
             title,
             content,
-            images,  // Directly storing images from req.body
-            videos,  // Directly storing videos from req.body
+            images,
+            videos,
             isPrivate,
             openDate,
+            analysis: {
+                sentiment: sentimentResult.sentiment,
+                confidence: sentimentResult.confidence,
+            },
         });
 
         await capsule.save();
@@ -31,6 +45,7 @@ export const AddCapsule = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
 
 export const GetUserCapsules = async (req, res) => {
     try {
