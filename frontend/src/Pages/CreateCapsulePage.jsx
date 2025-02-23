@@ -34,6 +34,7 @@ const CreateCapsulePage = () => {
       await createCapsule({ title, content, images: imageFiles, videos: videoFiles, isPrivate, openDate });
       navigate("/Timeline"); // Redirect after success
     } catch (err) {
+      console.log("Failed to create capsule. Try again.", error)
       setError("Failed to create capsule. Try again.");
     } finally {
       setLoading(false);
@@ -41,54 +42,112 @@ const CreateCapsulePage = () => {
   };
 
   return (
-    <div className="min-h-screen pt-32 flex flex-col items-center justify-center bg-gradient-to-b from-gray-900 to-indigo-900 text-white px-6">
-      <h1 className="text-4xl font-bold text-indigo-300 mb-8">Create a Time Capsule</h1>
+    <div
+      className="min-h-screen pt-32 flex flex-col lg:flex-row items-center mt-3 justify-center px-12"
+      style={{
+        backgroundImage: "url('CreateCapsule_BG.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
+      {/* ✅ Left Section - Heading */}
+      <div className="lg:w-1/2 flex flex-col ml-12 text-left">
+        <h1 className="text-8xl font-bold text-white mb-8">Create <h1>
+          A
+        </h1>
+          <h1 className="italic">
 
-      {error && <p className="text-red-400">{error}</p>}
+            Time
+          </h1>
+          Capsule.</h1>
 
-      {/* ✅ Capsule Creation Form */}
-      <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-2xl">
-        
-        {/* ✅ Title Input */}
-        <InputField label="Title" value={title} setValue={setTitle} required />
+        {error && <p className="text-red-400">{error}</p>}
+      </div>
 
-        {/* ✅ Description Input */}
-        <TextareaField label="Description" value={content} setValue={setContent} required />
-
-        {/* ✅ File Upload */}
-        <div className="mb-6">
-          <label className="block text-lg font-medium mb-2">Upload Files</label>
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            accept="image/*,video/*,.txt,.pdf"
-            className="w-full bg-white/10 border border-white/30 rounded-lg p-3 text-white cursor-pointer"
-          />
-        </div>
-
-        {/* ✅ Privacy Selection */}
-        <div className="mb-6">
-          <label className="block text-lg font-medium mb-2">Privacy</label>
-          <div className="flex space-x-6">
-            <RadioOption label="Private" checked={isPrivate} onChange={() => setIsPrivate(true)} />
-            <RadioOption label="Community" checked={!isPrivate} onChange={() => setIsPrivate(false)} />
-          </div>
-        </div>
-
-        {/* ✅ Open Date Selection */}
-        <InputField label="Open Date" type="date" value={openDate} setValue={setOpenDate} required />
-
-        {/* ✅ Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white py-3 rounded-lg text-lg font-medium transition-transform transform hover:scale-105 shadow-lg"
-          disabled={loading}
+      {/* ✅ Right Section - Form */}
+      <div className="lg:w-1/2  mt-10 mb-10 flex justify-center">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white/50 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl w-3/4 p-8 max-w-2xl 
+               transition-transform transform hover:scale-[1.02] duration-300 text-xl"
         >
-          {loading ? "Creating..." : "Create Capsule"}
-        </button>
-      </form>
+          {/* ✅ Title Input */}
+          <InputField
+            label="Title"
+            value={title}
+            setValue={setTitle}
+            required
+            className="bg-white/10 border border-white/30 focus:ring-2 focus:ring-blue-500 rounded-xl"
+          />
+
+          {/* ✅ Description Input */}
+          <TextareaField
+            label="Description"
+            value={content}
+            setValue={setContent}
+            required
+            className="bg-white/10 border border-white/30 focus:ring-2 focus:ring-blue-500 rounded-xl"
+          />
+
+          {/* ✅ File Upload */}
+          <div className="mb-6">
+            <label className="block text-lg font-medium  mb-2">Upload Files</label>
+            <input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              accept="image/*,video/*,.txt,.pdf"
+              className="w-full bg-white/10 border border-white/30 rounded-xl p-3 text-white cursor-pointer 
+                   file:bg-blue-600 file:border-none file:text-white file:py-2 file:px-4 
+                   file:rounded-xl hover:file:bg-blue-700 transition-all duration-300"
+            />
+          </div>
+
+          {/* ✅ Privacy Selection */}
+          <div className="mb-6">
+            <label className="block text-lg font-medium  mb-2">Privacy</label>
+            <div className="flex space-x-6">
+              <RadioOption
+                label="Private"
+                checked={isPrivate}
+                onChange={() => setIsPrivate(true)}
+                className="hover:bg-white/10 transition-all duration-300 rounded-xl px-3 py-2"
+              />
+              <RadioOption
+                label="Community"
+                checked={!isPrivate}
+                onChange={() => setIsPrivate(false)}
+                className="hover:bg-white/10 transition-all duration-300 rounded-xl px-3 py-2"
+              />
+            </div>
+          </div>
+
+          {/* ✅ Open Date Selection */}
+          <InputField
+            label="Unlock Date"
+            type="date"
+            value={openDate}
+            setValue={setOpenDate}
+            required
+            className="bg-white/10 border border-white/30 focus:ring-2 focus:ring-blue-500 rounded-xl"
+          />
+
+          {/* ✅ Submit Button */}
+          <button
+            type="submit"
+            className="w-2/5 bg-blue-500 hover:from-indigo-700 hover:to-blue-700 
+                 text-white py-4 rounded-2xl text-lg font-medium transition-transform transform 
+                 hover:scale-105 shadow-lg hover:shadow-blue-500/50 duration-300"
+            disabled={loading}
+          >
+            {loading ? "Creating..." : "Create Capsule"}
+          </button>
+        </form>
+      </div>
+
     </div>
+
   );
 };
 

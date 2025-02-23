@@ -14,7 +14,7 @@ const HowToUse = () => {
       setScrollPosition(position);
       const sectionHeight = window.innerHeight;
       const newActiveStep = Math.min(3, Math.floor(position / sectionHeight));
-      
+
       if (newActiveStep !== activeStep) {
         setActiveStep(newActiveStep);
       }
@@ -29,7 +29,7 @@ const HowToUse = () => {
     {
       title: "Step 1: Sign Up",
       link: "/Signup",
-      description: "Create your account in just a few seconds to get started with our service.",
+      description: "Create Your Account To Get Started With Our Service.",
       icon: <Clock className="w-20 h-20 text-indigo-400" />,
       era: "Future",
       year: "3025 AD",
@@ -37,27 +37,29 @@ const HowToUse = () => {
     {
       title: "Step 2: Set Preferences",
       link: "/Profile",
-      description: "Customize your experience by selecting your preferred settings and options.",
+      description: "Customize Your Experience by Selecting Your Preferred Settings and Options.",
       icon: <CheckSquare className="w-20 h-20 text-indigo-400" />,
       era: "Present",
       year: "2025 AD",
     },
     {
-      title: "Step 3: Upload Your Data",
+      title: "Step 3: Create Your Time Capsule",
       link: "/CreateCapsule",
-      description: "Link your existing accounts to get the full benefit of our platform.",
+      description: "Add your Most Cherished Memories and Secrets. Lock them away for the Future or Share them Now!",
       icon: <Dna className="w-20 h-20 text-indigo-400" />,
-      era: "Ice Age",
-      year: "10,000 BC",
+      era: "Futuristic Vault",
+      year: "3024 AD",
     },
     {
-      title: "Step 4: Start Exploring",
-      link: "/Timeline",
-      description: "You're all set! Begin exploring all the amazing features available to you.",
+      title: "Step 4: Explore & Connect",
+      link: "/Chat",
+      description: "You're all set! Discover incredible Time Capsules, climb the Leaderboard, and chat with the Community to share your journey.",
       icon: <Rocket className="w-20 h-20 text-indigo-400" />,
-      era: "Dinosaur Era",
-      year: "65 Million BC",
-    },
+      era: "Dinosaur Era & Beyond",
+      year: "65 Million BC - Present",
+    }
+
+
   ];
 
   // ✅ Calculate Floating Rocket Position Based on Scroll
@@ -73,7 +75,7 @@ const HowToUse = () => {
 
   return (
     <div className="relative w-full bg-black text-white overflow-hidden">
-      
+
       {/* ✅ Background Stars Animation */}
       <div className="fixed inset-0 z-[-1]">
         {[...Array(150)].map((_, i) => (
@@ -104,20 +106,18 @@ const HowToUse = () => {
       {steps.map((step, index) => (
         <div
           key={index}
-          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${
-            index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700"
-          }`}
+          className={`min-h-screen flex items-center justify-center relative bg-gradient-to-b ${index % 2 === 0 ? "from-blue-900 to-green-700" : "from-green-700 to-brown-700"
+            }`}
         >
           {/* ✅ Step Content */}
           <div
-            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${
-              activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"
-            }`}
+            className={`relative w-2/3 p-12 bg-gray-900 bg-opacity-80 rounded-3xl shadow-lg transition-transform duration-500 transform ${activeStep === index ? "scale-105 opacity-100" : "scale-95 opacity-60"
+              }`}
           >
             <div className="text-purple-300 text-lg mb-4">
               {step.era} • {step.year}
             </div>
-            
+
             {/* ✅ Step Icon & Title */}
             <div className="flex items-center mb-6">
               {step.icon}

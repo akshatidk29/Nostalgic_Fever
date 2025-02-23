@@ -2,9 +2,10 @@ import { create } from "zustand";
 import { axiosInstance } from "../Lib/Axios.js";
 import { io } from "socket.io-client";
 import { UseChatStore } from "./UseChatStore";
+import { toast } from "react-hot-toast";
 
 const isLocal = window.location.hostname === "localhost";
-const socketBaseURL = isLocal ? "http://localhost:5001" : "http://192.168.53.158:5001";
+const socketBaseURL = isLocal ? "http://localhost:5001" : "http://192.168.143.158:5001";
 
 export const UseAuthStore = create((set, get) => ({
     authUser: null,
@@ -30,6 +31,7 @@ export const UseAuthStore = create((set, get) => ({
             if (error.response?.status === 401) {
                 set({ authUser: null });
             }
+            toast.error("Session expired. Please log in again.");
         } finally {
             set({ isCheckingAuth: false });
         }
@@ -42,8 +44,10 @@ export const UseAuthStore = create((set, get) => ({
             if (res.data) {
                 set({ authUser: res.data });
                 get().connectSocket();
+                toast.success("Signup successful! Welcome to Nostalgic Fever.");
             }
-        } catch {
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Signup failed. Try again!");
             set({ authUser: null });
         } finally {
             set({ isSigningUp: false });
@@ -57,8 +61,10 @@ export const UseAuthStore = create((set, get) => ({
             if (res.data) {
                 set({ authUser: res.data });
                 get().connectSocket();
+                toast.success("Login successful! Welcome back.");
             }
-        } catch {
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Invalid credentials. Try again!");
             set({ authUser: null });
         } finally {
             set({ isLoggingIn: false });
@@ -71,7 +77,10 @@ export const UseAuthStore = create((set, get) => ({
             await axiosInstance.post("/Auth/Logout");
             set({ authUser: null });
             get().disconnectSocket();
-        } catch {} finally {
+            toast.success("Logged out successfully!");
+        } catch (error) {
+            toast.error("Logout failed. Try again!");
+        } finally {
             set({ isLoggingOut: false });
         }
     },
@@ -81,10 +90,20 @@ export const UseAuthStore = create((set, get) => ({
         try {
             const res = await axiosInstance.put("/User/UploadPic", data);
             set({ authUser: res.data });
-        } catch {} finally {
+            toast.success("Profile updated successfully!");
+        } catch (error) {
+            toast.error("Failed to update profile. Try again!");
+        } finally {
             set({ isUpdatingProfile: false });
         }
     },
+
+    getUserById: async (userId) => {
+        const response = await axiosInstance.get(`/User/${userId}`);
+        if (!response.ok) throw new Error("Failed to fetch user");
+        return await response.json();
+    },
+
 
     connectSocket: () => {
         const { authUser, socket } = get();

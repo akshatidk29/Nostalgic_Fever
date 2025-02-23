@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { Calendar, Image, Lock } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { UseCapsuleStore } from "../Store/UseCapsuleStore";
 import { UseAuthStore } from "../Store/UseAuthStore";
+import Timeline from "../Components/Timeline"; // ✅ Import the Timeline Component
 
 const TimelinePage = () => {
   const { capsules, getUserCapsules, loading } = UseCapsuleStore();
   const { authUser } = UseAuthStore();
+  const [selectedCapsule, setSelectedCapsule] = useState(null); // ✅ State for selected capsule
 
   // ✅ Fetch user capsules on page load
   useEffect(() => {
@@ -14,73 +15,45 @@ const TimelinePage = () => {
     }
   }, [authUser, getUserCapsules]);
 
-  const currentDate = new Date();
-
   return (
-    <div className="min-h-screen pt-32 bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white py-16 px-6">
-      <h1 className="text-4xl font-bold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-blue-300">
-        Your Time Capsules
-      </h1>
+    <div className="flex flex-col min-h-screen"> {/* ✅ Flex container with min-h-screen */}
+      {/* ✅ Hero Section with Background Image */}
+      <div
+        className="relative w-full h-[400px] flex items-center justify-center bg-top"
+        style={{
+          backgroundImage: "url('/Timeline_BG.jpg')",
+          backgroundSize: "100%", // Zoom out by increasing the size
+          backgroundPosition: "bottom centre", // Keep the top part visible
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40"></div> {/* ✅ Dark Overlay for contrast */}
+        <h1 className="text-white text-8xl font-bold relative z-10">
+          Your Time Capsules
+        </h1>
+      </div>
 
-      {/* ✅ Show loading state while fetching capsules */}
-      {loading ? (
-        <p className="text-center text-indigo-300">Loading capsules...</p>
-      ) : (
-        <div className="relative max-w-4xl mx-auto">
-          {/* ✅ Vertical Timeline Line */}
-          <div className="absolute left-1/2 w-1 bg-indigo-500 h-full transform -translate-x-1/2"></div>
+      {/* ✅ Content Wrapper (flex-grow makes sure it fills available space) */}
+      <main className="flex-grow pt-12 bg-gradient-to-b from-blue-200 to-orange-200">
+        {/* ✅ Show loading state while fetching capsules */}
+        {loading ? (
+          <p className="text-center text-indigo-300 mt-12">Loading capsules...</p>
+        ) : (
+          <>
+            {/* ✅ Show message if no capsules exist */}
+            {capsules.length === 0 ? (
+              <p className="text-center text-gray-400 mt-12">No capsules found.</p>
+            ) : (
+              <Timeline
+                capsules={capsules} // ✅ Pass capsules data
+                showPublic={false} // ✅ Show private capsules by default
+                setSelectedCapsule={setSelectedCapsule} // ✅ Handle selection
+                show={false} // ✅ Hides Public/Private Vault heading
+              />
+            )}
+          </>
+        )}
+      </main>
 
-          {/* ✅ Show message if no capsules exist */}
-          {capsules.length === 0 ? (
-            <p className="text-center text-gray-400">No capsules found.</p>
-          ) : (
-            capsules.map((capsule, index) => {
-              const isUnlocked = new Date(capsule.openDate) <= currentDate;
-
-              return (
-                <div
-                  key={capsule._id}
-                  className={`relative flex items-center mb-16 group ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
-                >
-                  {/* ✅ Timeline Dot */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-indigo-400 rounded-full group-hover:scale-150 transition-transform duration-300"></div>
-
-                  {/* ✅ Capsule Content */}
-                  <div className={`w-5/12 ${index % 2 === 0 ? "pr-12" : "pl-12"}`}>
-                    <div className="bg-white/10 backdrop-blur-lg p-6 rounded-xl border border-white/10 hover:bg-white/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                      {/* ✅ Capsule Image */}
-                      <div className="relative h-40 mb-4 overflow-hidden rounded-lg">
-                        <img
-                          src={capsule.images[0] || "default-image.jpg"}
-                          alt={capsule.title}
-                          className={`w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 ${isUnlocked ? "" : "blur-md"}`}
-                        />
-                        {/* ✅ Lock overlay for locked capsules */}
-                        {!isUnlocked && (
-                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                            <Lock className="w-10 h-10 text-white" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* ✅ Capsule Details */}
-                      <h3 className="text-xl font-bold text-indigo-300 mb-2">{capsule.title}</h3>
-                      <div className="flex items-center justify-between text-sm text-indigo-200">
-                        <span className="flex items-center space-x-2">
-                          <Calendar className="w-4 h-4 text-indigo-400" /> {new Date(capsule.createdAt).getFullYear()}
-                        </span>
-                        <span className="px-2 py-1 bg-indigo-900/50 rounded-full flex items-center space-x-1">
-                          <Image className="w-4 h-4 text-indigo-300" /> <span>Opens: {new Date(capsule.openDate).toDateString()}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-      )}
     </div>
   );
 };

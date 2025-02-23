@@ -6,7 +6,7 @@ import { ProtectRoute } from "../MiddleWare/ProtectRoute.js";
 const router = express.Router();
 
 
-// Multer setup for handling file uploads
+// Multer setup for handling file uploads 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 

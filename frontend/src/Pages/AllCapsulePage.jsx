@@ -30,22 +30,22 @@ const CapsuleDashboard = () => {
     const fetchCapsules = async () => {
         const userCapsules = await getUserCapsules();
         const publicCapsules = await getPublicCapsules();
-        
+
         // Create a Map to deduplicate capsules based on _id
         const capsuleMap = new Map();
-        
+
         // Add user capsules first
         userCapsules.forEach(capsule => {
             capsuleMap.set(capsule._id, capsule);
         });
-        
+
         // Add public capsules, but only if they're not already in the map
         publicCapsules.forEach(capsule => {
             if (!capsuleMap.has(capsule._id)) {
                 capsuleMap.set(capsule._id, capsule);
             }
         });
-        
+
         // Convert map values back to array
         const allCapsules = Array.from(capsuleMap.values());
         categorizeCapsules(allCapsules);
@@ -143,7 +143,7 @@ const CapsuleDashboard = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen mt-24 bg-gray-50">
             {/* Notification Toast */}
             {notification.show && (
                 <div className="fixed top-4 right-4 bg-black text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg">
@@ -153,30 +153,29 @@ const CapsuleDashboard = () => {
             )}
 
             <div className="p-6 pt-24 max-w-7xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <div className="flex items-center justify-between mb-24">
+                    <h1 className="text-8xl font-bold bg-blue-900 bg-clip-text text-transparent">
                         Time Capsules
                     </h1>
-                    <button 
+                    <button
                         onClick={() => navigate('/CreateCapsule')}
-                        className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity"
+                        className="px-3 py-5 bg-blue-400 text-white rounded-3xl text-lg hover:opacity-90 transition-opacity"
                     >
                         Create New Capsule
                     </button>
                 </div>
 
                 {/* Tabs */}
-                <div className="mb-8 bg-white rounded-xl p-2 shadow-sm">
+                <div className="mb-32 h-20 bg-white rounded-xl  p-3 shadow-sm">
                     <div className="flex flex-wrap gap-2">
                         {['all', 'positive', 'neutral', 'negative'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => handleTabChange(tab)}
-                                className={`flex-1 min-w-[120px] px-4 py-2 rounded-lg transition-all ${
-                                    activeTab === tab
-                                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
-                                        : 'text-gray-600 hover:bg-gray-100'
-                                }`}
+                                className={`flex-1 w-24 h-15 px-4 py-2 text-2xl rounded-xl transition-all ${activeTab === tab
+                                    ? 'bg-gray-500 text-white'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                                    }`}
                             >
                                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
                             </button>
@@ -190,14 +189,14 @@ const CapsuleDashboard = () => {
                         const coverMedia = capsule.images[0] || capsule.videos[0];
 
                         return (
-                            <div key={capsule._id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                            <div key={capsule._id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
                                 {/* Card Header */}
-                                <div className="relative h-40 bg-gradient-to-r from-indigo-600 to-purple-600">
+                                <div className="relative h-40">
                                     {coverMedia && (
                                         <img
                                             src={coverMedia}
                                             alt="Capsule cover"
-                                            className="w-full h-full object-cover opacity-80"
+                                            className="w-full h-full object-cover opacity-100"
                                         />
                                     )}
                                     <div className="absolute inset-0 p-4 flex flex-col justify-between bg-gradient-to-t from-black/50 to-transparent">
@@ -206,11 +205,8 @@ const CapsuleDashboard = () => {
                                                 {capsule.isPrivate ? <Lock className="w-4 h-4 mr-1" /> : <Globe className="w-4 h-4 mr-1" />}
                                                 {capsule.isPrivate ? 'Private' : 'Public'}
                                             </span>
-                                            <button className="p-1 text-white hover:bg-white/20 rounded-full">
-                                                <MoreHorizontal className="w-5 h-5" />
-                                            </button>
                                         </div>
-                                        <h3 className="text-xl font-semibold text-white">{capsule.title}</h3>
+                                        <h3 className="text-2xl font-semibold text-white">{capsule.title}</h3>
                                     </div>
                                 </div>
 
@@ -218,9 +214,9 @@ const CapsuleDashboard = () => {
                                 <div className="p-4">
                                     <div className="flex items-center justify-between mb-4">
                                         <div>
-                                            <p className="text-sm font-medium">{capsule.username}</p>
+                                            <p className="text-lg">{capsule.username}</p>
                                             <p className="text-xs text-gray-500">
-                                                Opens {formatDate(capsule.openDate)}
+                                                Unlocked On {formatDate(capsule.openDate)}
                                             </p>
                                         </div>
                                         {getSentimentEmoji(capsule.analysis?.sentiment)}
@@ -230,28 +226,27 @@ const CapsuleDashboard = () => {
 
                                     {/* Media Section with Share Buttons */}
                                     {(capsule.images?.length > 0 || capsule.videos?.length > 0) && (
-                                        <div className="flex flex-wrap gap-4 mb-4 p-2 bg-gray-50 rounded-lg">
+                                        <div className="flex flex-wrap gap-4 mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                            {/* Loop through images */}
                                             {capsule.images?.map((img, idx) => (
                                                 <div key={idx} className="relative group">
-                                                    <img src={img} alt={`Image ${idx + 1}`} className="w-20 h-20 object-cover rounded" />
                                                     <button
                                                         onClick={() => handleShare(img)}
-                                                        className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center rounded"
+                                                        className="flex items-center justify-center w-36 h-12 rounded-lg shadow-md transition-all"
                                                     >
-                                                        <Copy className="w-4 h-4 text-white" />
+                                                        <Copy className="w-5 h-5 mr-2" /> Copy Image URL
                                                     </button>
                                                 </div>
                                             ))}
+
+                                            {/* Loop through videos */}
                                             {capsule.videos?.map((video, idx) => (
                                                 <div key={idx} className="relative group">
-                                                    <video className="w-20 h-20 object-cover rounded">
-                                                        <source src={video} />
-                                                    </video>
                                                     <button
                                                         onClick={() => handleShare(video)}
-                                                        className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center rounded"
+                                                        className="flex items-center justify-center w-36 h-12 rounded-lg shadow-md transition-all"
                                                     >
-                                                        <Copy className="w-4 h-4 text-white" />
+                                                        <Copy className="w-5 h-5 mr-2" /> Copy Video URL
                                                     </button>
                                                 </div>
                                             ))}

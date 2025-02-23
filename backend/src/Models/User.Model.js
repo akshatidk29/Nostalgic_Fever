@@ -19,6 +19,26 @@ const UserSchema = new mongoose.Schema(
         profilePic: {
             type: String,  // Stores Cloudinary image URL
             default: "",   // Default is empty
+        },
+        likesReceived: {
+            type: Number,
+            default: 0, // Total likes received on all posts
+        },
+        commentsReceived: {
+            type: Number,
+            default: 0, // Total comments received on all posts
+        },
+        streak: {
+            type: Number,
+            default: 0, // Streak count for user activity
+        },
+        lastPostedDate: {
+            type: Date,
+            default: null, // Stores the last post date to calculate streaks
+        },
+        totalScore: {
+            type: Number,
+            default: 0,
         }
     },
     {

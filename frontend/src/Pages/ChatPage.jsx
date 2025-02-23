@@ -11,7 +11,7 @@ const ChatPage = () => {
     }, []);
 
     return (
-        <div className="flex h-screen pt-32 bg-gray-900 text-white">
+        <div className="flex h-screen mt-30 text-white">
             <ChatSidebar />
             <ChatWindow />
         </div>

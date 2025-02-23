@@ -13,7 +13,7 @@ const MessageSchema = new mongoose.Schema(
             ref: "User", // Reference to the User model
             required: true,
         },
-
+ 
         text: {
             type: String,
         }
