@@ -1,0 +1,21 @@
+{
+  "name": "inforger",
+  "version": "1.0.0",
+  "description": "Nostalgic Fever is a web platform that allows users to create and store digital time capsules containing text, images, and videos. With features like public and private capsules, chat functionality, gamification through a leaderboard, sentiment analysis, and blockchain security, Nostalgic Fever provides a unique way to preserve and relive memories.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshatidk29/Inforger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akshatidk29/Inforger/issues"
+  },
+  "homepage": "https://github.com/akshatidk29/Inforger#readme"
+}
