@@ -30,7 +30,6 @@ export const UseAuthStore = create((set, get) => ({
             if (error.response?.status === 401) {
                 set({ authUser: null });
             }
-            toast.error("Session expired. Please log in again.");
         } finally {
             set({ isCheckingAuth: false });
         }
