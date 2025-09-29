@@ -3,39 +3,39 @@
 ### MP4 PPT Link : https://drive.google.com/file/d/10KCAM1kBCQUuuJnAerf5z9YT4TkeVxJ1/view?usp=drivesdk
 **Relive Memories, One Frame at a Time!**  
 
-## **📌 Overview**  
+## **Overview**  
 
 Nostalgic Fever is a **web platform** that allows users to **create, store, and share digital time capsules** containing **text, images, and videos**. It includes features like **chat functionality, gamification (leaderboard), sentiment analysis, and blockchain security** to ensure a secure and engaging experience.  
 
-## **🚀 Features**  
+## **Features**  
 
-### 🕰️ **Time Capsules**  
+### **Time Capsules**  
 - Users can **store memories** in the form of text, images, and videos.  
 - Capsules can be **public** (shared with everyone) or **private** (visible only to the owner).  
 - Set an **unlock date**, allowing capsules to be revealed at a future time.  
 
-### 💬 **Chat & Community Engagement**  
+### **Chat & Community Engagement**  
 - Users can **chat with each other** and share their experiences.  
 - Interact with public capsules through **likes and comments**.  
 
-### 🏆 **Leaderboard & Gamification**  
+### **Leaderboard & Gamification**  
 - Users earn points for **creating and engaging** with time capsules.  
 - A **leaderboard** ranks users based on activity, including **streaks, likes, and comments**.  
 
-### 🤖 **Sentiment Analysis (Hugging Face API)**  
+### **Sentiment Analysis (Hugging Face API)**  
 - AI-powered **sentiment analysis** tags images with **emotions** (e.g., happy, sad, nostalgic).  
 - Users can explore their **memories based on mood**.  
 
-### 🔗 **Blockchain Security**  
+### **Blockchain Security**  
 - **Ethereum Sepolia Testnet integration** ensures **image authenticity**.  
 - If an image is altered, **the system flags the change**.  
 
-### 📞 **Contact & Support**  
+### **Contact & Support**  
 - A dedicated **Contact Us** page for queries and support.  
 
 ---
 
-## **🛠️ Tech Stack**  
+## **Tech Stack**  
 
 | Technology         | Purpose                  |  
 |-------------------|--------------------------|  
@@ -50,7 +50,7 @@ Nostalgic Fever is a **web platform** that allows users to **create, store, and 
 
 ---
 
-## **🔧 Environment Variables Setup**  
+## **Environment Variables Setup**  
 
 To run **Nostalgic Fever** locally, create a `.env` file in the **root directory** and configure the following variables:  
 
@@ -81,27 +81,27 @@ NODE_ENV=development
 
 ---
 
-## **📥 Installation & Usage**  
+## **Installation & Usage**  
 
-### **1️⃣ Clone the Repository**  
+### **1️. Clone the Repository**  
 ```sh
 git clone https://github.com/akshatidk29/Inforger.git  
 cd Inforger  
 ```  
 
-### **2️⃣ Install Dependencies**  
+### **2️. Install Dependencies**  
 ```sh
 npm install  
 ```  
 
-### **3️⃣ Start the Application**  
+### **3️. Start the Application**  
 ```sh
 npm run dev  
 ```  
 
 ---
 
-## **🐞 Challenges We Ran Into**  
+## **Challenges We Ran Into**  
 
 1. **Blockchain Image Hashing** – Ensuring images remain **tamper-proof** using Ethereum required **multiple verification steps** to prevent mismatch errors. We resolved this by implementing **hash comparison at access time**.  
 2. **Real-Time Sentiment Analysis** – Integrating **Hugging Face API** into the system while maintaining **fast response times** was a challenge. We optimized by **pre-caching results** where possible.  
@@ -109,7 +109,7 @@ npm run dev
 
 ---
 
-## **📌 How It Fits into WebDev Track**  
+## **How It Fits into WebDev Track**  
 
 Nostalgic Fever is a **full-stack web application** built with **modern web technologies**. It combines:  
 - **Frontend (React, Vite, Tailwind CSS)** for a fast, interactive user experience.  
@@ -121,7 +121,7 @@ This project showcases a **seamless combination of Web Development, AI, and Bloc
 
 ---
 
-## **🤝 Contributing**  
+## **Contributing**  
 
 Want to contribute? Follow these steps:  
 
@@ -133,13 +133,14 @@ Want to contribute? Follow these steps:
 
 ---
 
-## **📞 Contact & Support**  
+## **Contact & Support**  
 
 - **Email**: support@nostalgicfever.com  
 - **GitHub Issues**: [Report an issue](https://github.com/akshatidk29/nostalgic-fever/issues)  
 
 ---
 
-🚀 **Nostalgic Fever – Relive Memories, One Frame at a Time!**  
+**Nostalgic Fever – Relive Memories, One Frame at a Time!**  
 
 ---
+
